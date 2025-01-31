@@ -5,8 +5,8 @@ function App() {
   const [showCard, setShowCard] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
-    branch: "",
-    division: "",
+    class: "",
+    uid: "",
     bloodGroup: "",
     photo: null,
   });
@@ -38,29 +38,71 @@ function App() {
         <div className="form-container">
           <h2>Enter Your Details</h2>
           <form onSubmit={handleSubmit}>
-            <input type="text" name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} required />
-            <input type="text" name="branch" placeholder="Branch" value={formData.branch} onChange={handleChange} required />
-            <input type="text" name="division" placeholder="Division" value={formData.division} onChange={handleChange} required />
-            <input type="text" name="bloodGroup" placeholder="Blood Group" value={formData.bloodGroup} onChange={handleChange} required />
-            <input type="file" accept="image/*" onChange={handlePhotoUpload} required />
+            <input
+              type="text"
+              name="name"
+              placeholder="Full Name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="text"
+              name="class"
+              placeholder="Class"
+              value={formData.class}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="text"
+              name="uid"
+              placeholder="UID"
+              value={formData.uid}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="text"
+              name="bloodGroup"
+              placeholder="Blood Group"
+              value={formData.bloodGroup}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handlePhotoUpload}
+              required
+            />
             <button type="submit">Generate ID Card</button>
           </form>
         </div>
       ) : (
-        <div className="card">
-          <div className="card-header">
-            <h3>STUDENT ID CARD</h3>
+        <div className="id-card-wrapper">
+          <div className="card">
+            <div className="card-header">
+              <h3>STUDENT ID CARD</h3>
+            </div>
+            <div className="profile">
+              {formData.photo ? (
+                <img src={formData.photo} alt="Profile" />
+              ) : (
+                <div className="placeholder">No Image</div>
+              )}
+            </div>
+            <div className="card-details">
+              <h2>{formData.name}</h2>
+              <p><strong>Class:</strong> {formData.class}</p>
+              <p><strong>UID:</strong> {formData.uid}</p>
+              <p><strong>Blood Group:</strong> {formData.bloodGroup}</p>
+            </div>
           </div>
-          <div className="profile">
-            {formData.photo ? <img src={formData.photo} alt="Profile" /> : <div className="placeholder">No Image</div>}
-          </div>
-          <div className="card-details">
-            <h2>{formData.name}</h2>
-            <p><strong>Branch:</strong> {formData.branch}</p>
-            <p><strong>Division:</strong> {formData.division}</p>
-            <p><strong>Blood Group:</strong> {formData.bloodGroup}</p>
-          </div>
-          <button onClick={() => setShowCard(false)}>Go Back</button>
+          
+          {/* Download and Back Buttons */}
+          <button className="download-btn">Download ID Card</button>
+          <button className="back-btn" onClick={() => setShowCard(false)}>Back</button>
         </div>
       )}
     </div>
