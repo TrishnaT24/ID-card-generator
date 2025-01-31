@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 
 function Form({ onGenerate }) {
-    
   const [formData, setFormData] = useState({
     name: "",
     id: "",
     department: "",
+    phone: "",
+    address: "",
+    institute: "", // Added institute field
     profileImage: null,
   });
+
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -18,17 +22,28 @@ function Form({ onGenerate }) {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        console.log('Image Data:', reader.result);
         setFormData({ ...formData, profileImage: reader.result });
       };
       reader.readAsDataURL(file);
     }
   };
 
+  const validateForm = () => {
+    let newErrors = {};
+    Object.keys(formData).forEach((key) => {
+      if (!formData[key] || (key === "profileImage" && formData.profileImage === null)) {
+        newErrors[key] = `${key} is required`;
+      }
+    });
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = (e) => {
-    console.log('Form Submitted with data:', formData); 
     e.preventDefault();
-    onGenerate(formData);  // Pass the form data to the parent component
+    if (validateForm()) {
+      onGenerate(formData);
+    }
   };
 
   return (
@@ -37,48 +52,40 @@ function Form({ onGenerate }) {
         <div className="absolute inset-0 bg-gradient-to-r from-indigo-700 to-purple-500 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
         <div className="text-white relative px-4 py-10 bg-indigo-400 shadow-lg sm:rounded-3xl sm:p-20">
           <div className="text-center pb-6">
-            <h1 className="text-3xl">Contact Us!</h1>
-            <p className="text-gray-300">
-              Fill up the form below to send us a message.
-            </p>
+            <h1 className="text-3xl">Submit your Details to Generate the ID Card</h1>
+            <p className="text-gray-300">All fields are required.</p>
           </div>
 
           <form onSubmit={handleSubmit}>
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              placeholder="Enter Name"
-              onChange={handleChange}
-              className="shadow mb-4 appearance-none border rounded w-full py-2 px-3 text-gray-700 bg-white leading-tight focus:outline-none focus:shadow-outline"
-            />
-            <input
-              type="text"
-              name="id"
-              value={formData.id}
-              placeholder="Enter ID"
-              onChange={handleChange}
-              className="shadow mb-4 appearance-none border rounded w-full py-2 px-3 text-gray-700 bg-white leading-tight focus:outline-none focus:shadow-outline"
-            />
-            <input
-              type="text"
-              name="department"
-              value={formData.department}
-              placeholder="Enter Department"
-              onChange={handleChange}
-              className="shadow mb-4 appearance-none border rounded w-full py-2 px-3 text-gray-700 bg-white leading-tight focus:outline-none focus:shadow-outline"
-            />
+            {["name", "id", "department", "phone", "address", "institute"].map((field) => (
+              <div key={field}>
+                <input
+                  type="text"
+                  name={field}
+                  value={formData[field]}
+                  placeholder={`Enter ${field.charAt(0).toUpperCase() + field.slice(1)}`}
+                  onChange={handleChange}
+                  className="shadow mb-3 appearance-none border rounded w-full py-2 px-3 text-gray-700 bg-white leading-tight focus:outline-none focus:shadow-outline"
+                />
+                {errors[field] && <p className="text-red-500 text-xs italic">{errors[field]}</p>}
+              </div>
+            ))}
+
             <input
               type="file"
-            //   value={formData.profileImage}
               accept="image/*"
               onChange={handleImageUpload}
-              className="shadow mb-4 appearance-none border rounded w-full py-2 px-3 text-gray-700 bg-white leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow mb-3 appearance-none border rounded w-full py-2 px-3 text-gray-700 bg-white leading-tight focus:outline-none focus:shadow-outline"
             />
-            <div className="flex justify-center">
+            {errors.profileImage && <p className="text-red-500 text-xs italic">{errors.profileImage}</p>}
+
+            <div className="flex justify-center mt-4">
               <button
                 type="submit"
-                className="shadow bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                className={`shadow bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${
+                  Object.values(formData).some((value) => !value) ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                disabled={Object.values(formData).some((value) => !value)}
               >
                 Generate ID Card
               </button>
