@@ -83,6 +83,7 @@ function Form({onGenerate}) {
 
     try {
       const response = await fetch("http://localhost:3000/api/users", {
+      // const response = await fetch("http://<ip where backend is hosted>:3000/api/users", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
