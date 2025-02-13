@@ -83,7 +83,7 @@ function Form({onGenerate}) {
 
     try {
       // http://localhost:3000/api/users
-      const response = await fetch("https://id-card-generator-git-main-trishnas-projects-c72ed184.vercel.app/api/users", {
+      const response = await fetch("https://id-card-generator-peach.vercel.app/api/users", {
       // const response = await fetch("http://<ip where backend is hosted>:3000/api/users", {
         method: "POST",
         headers: {
