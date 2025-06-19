@@ -7,7 +7,7 @@ const userSchema = new Schema({
     type: String,
   },
   id: {
-    type: Number,
+    type: String,
     unique: true,
   },
   department: {

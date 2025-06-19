@@ -32,9 +32,9 @@
 
 const express = require('express');
 const mongoose = require('mongoose');
-const userRoutes = require('../routes/userRoutes');
+const userRoutes = require('./routes/userRoutes');
 const cors = require('cors');
-const connectDB = require('../config/db');
+const connectDB = require('./config/db');
 
 const app = express();
 
@@ -61,6 +61,11 @@ app.get('/', (req, res) => {
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Something broke!' });
+});
+
+ const PORT = 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
 
 // Export for Vercel

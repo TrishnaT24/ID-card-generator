@@ -82,8 +82,8 @@ function Form({onGenerate}) {
     const userData = { name, id, department, phone, address, institute, profileImage };
 
     try {
-      // http://localhost:3000/api/users
-      const response = await fetch("https://id-card-generator-peach.vercel.app/api/users", {
+      // https://id-card-generator-peach.vercel.app/api/users
+      const response = await fetch("http://localhost:3000/api/users", {
       // const response = await fetch("http://<ip where backend is hosted>:3000/api/users", {
         method: "POST",
         headers: {
