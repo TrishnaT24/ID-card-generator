@@ -41,7 +41,7 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(cors({
-  origin: ["https://id-card-generator-frontend.vercel.app", "http://localhost:5173"],
+  origin: ["https://id-card-generator-frontend.vercel.app", "https://id-card-generator-one.vercel.app"],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 }));
